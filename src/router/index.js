@@ -20,7 +20,7 @@ const router = createRouter({
       name: 'coaches'
     },
     {
-      name: 'coachDetail',
+      name: 'coach-detail',
       path: '/coaches/:id',
       component: CoachDetail,
       children: [
@@ -42,7 +42,7 @@ const router = createRouter({
       component: RequestsReceived,
     },
     {
-      name: 'notFound',
+      name: 'not-found',
       path: '/:notFound(.*)',
       component: NotFound,
     },
