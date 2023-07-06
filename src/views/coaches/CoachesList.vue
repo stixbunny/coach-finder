@@ -3,14 +3,16 @@
 		FILTER
 	</section>
 	<section>
-		<div class="controls">
-			<button>Refresh</button>
-			<RouterLink to="/register">Register as Coach</RouterLink>
-		</div>
-		<ul v-if="coachesStore.hasCoaches()">
-			<CoachItem v-for="coach in coachesStore.coaches" :key="coach.id" :="coach"/>
-		</ul>
-		<h3 v-else>No coaches found.</h3>
+		<BaseCard>
+			<div class="controls">
+				<button>Refresh</button>
+				<RouterLink to="/register">Register as Coach</RouterLink>
+			</div>
+			<ul v-if="coachesStore.hasCoaches()">
+				<CoachItem v-for="coach in coachesStore.coaches" :key="coach.id" :="coach"/>
+			</ul>
+			<h3 v-else>No coaches found.</h3>
+		</BaseCard>
 	</section>
 </template>
 
