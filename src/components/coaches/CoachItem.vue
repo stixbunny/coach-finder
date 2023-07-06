@@ -1,7 +1,7 @@
 <template>
 	<li>
 		<h3>{{ fullName }}</h3>
-		<h4>${{ props.rate }}/hour</h4>
+		<h4>${{ props.hourlyRate }}/hour</h4>
 		<div>
 			<span v-for="area in props.areas" :key="area">{{ area }}</span>
 		</div>
@@ -14,32 +14,28 @@
 
 <script setup>
 import { computed } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const route = useRoute();
 
 const props = defineProps({
 	id: String,
 	firstName: String,
 	lastName: String,
-	rate: Number,
+	hourlyRate: Number,
 	areas: Array,
 });
-
-console.log(router.resolve({name: 'coach-detail', id: props.id, params: { id: props.id }}));
 
 const fullName = computed(() => {
 	return `${props.firstName} ${props.lastName}`;
 });
 
 const coachContactLink = computed(() => {
-	// return `${route.path}/${props.id}/${router.resolve()}`;
-	return 'a'
+	return router.resolve({name: 'contact', params: { id: props.id }}).path;
 });
 
 const coachDetailsLink = computed(() => {
-	return `${route.path}/${props.id}`
+	return router.resolve({name: 'coach-detail', params: { id: props.id }}).path
 });
 </script>
 
