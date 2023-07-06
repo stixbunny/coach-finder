@@ -19,8 +19,6 @@ import { useRouter, useRoute } from 'vue-router';
 const router = useRouter();
 const route = useRoute();
 
-console.table(router.getRoutes());
-
 const props = defineProps({
 	id: String,
 	firstName: String,
@@ -29,12 +27,15 @@ const props = defineProps({
 	areas: Array,
 });
 
+console.log(router.resolve({name: 'coach-detail', id: props.id, params: { id: props.id }}));
+
 const fullName = computed(() => {
 	return `${props.firstName} ${props.lastName}`;
 });
 
 const coachContactLink = computed(() => {
-	return `${route.path}/${props.id}/${router.resolve({name: 'contact'})}`;
+	// return `${route.path}/${props.id}/${router.resolve()}`;
+	return 'a'
 });
 
 const coachDetailsLink = computed(() => {
