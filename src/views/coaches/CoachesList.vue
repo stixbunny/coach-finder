@@ -8,9 +8,7 @@
 			<RouterLink to="/register">Register as Coach</RouterLink>
 		</div>
 		<ul v-if="coachesStore.hasCoaches()">
-			<li v-for="coach in coachesStore.coaches" :key="coach.id">
-				{{ coach.firstName }}
-			</li>
+			<CoachItem />
 		</ul>
 		<h3 v-else>No coaches found.</h3>
 	</section>
@@ -18,6 +16,7 @@
 
 <script setup>
 import { useCoachesStore } from '../../stores/coaches';
+import CoachItem from '../../components/coaches/CoachItem.vue';
 
 const coachesStore = useCoachesStore();
 </script>
