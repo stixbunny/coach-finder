@@ -1,7 +1,9 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
+import { useMainStore } from './main';
 
 export const useCoachesStore = defineStore('coaches', () => {
+  const user = useMainStore();
   const coaches = ref([
     {
       id: 'c1',
@@ -27,7 +29,7 @@ export const useCoachesStore = defineStore('coaches', () => {
   }
   function registerCoach(data) {
     const coachData = {
-      id: `c${coaches.value.length + 1}`,
+      id: user.userId,
       firstName: data.first,
       lastName: data.last,
       description: data.desc,

@@ -6,7 +6,7 @@
     <BaseCard>
       <div class="controls">
         <BaseButton mode="outline">Refresh</BaseButton>
-        <BaseButton link to="/register">Register as Coach</BaseButton>
+        <BaseButton v-if="!isCoach" link to="/register">Register as Coach</BaseButton>
       </div>
       <ul v-if="coachesStore.hasCoaches()">
         <CoachItem v-for="coach in filteredCoaches" :key="coach.id" :="coach" />
@@ -21,8 +21,10 @@ import { useCoachesStore } from '../../stores/coaches';
 import CoachItem from '../../components/coaches/CoachItem.vue';
 import CoachFilter from '../../components/coaches/CoachFilter.vue';
 import { computed, ref } from 'vue';
+import { useMainStore } from '../../stores/main';
 
 const coachesStore = useCoachesStore();
+const mainStore = useMainStore();
 
 const activeFilters = ref({
   frontend: true,
@@ -42,6 +44,10 @@ const filteredCoaches = computed(() => {
     return false;
   });
 });
+
+const isCoach = computed(() => {
+	return mainStore.isCoach();
+})
 
 function setFilters(updatedFilters) {
   activeFilters.value = updatedFilters;
