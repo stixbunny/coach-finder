@@ -1,26 +1,51 @@
 <template>
-	<section>
-		FILTER
-	</section>
-	<section>
-		<BaseCard>
-			<div class="controls">
-				<BaseButton mode="outline">Refresh</BaseButton>
-				<BaseButton link to="/register">Register as Coach</BaseButton>
-			</div>
-			<ul v-if="coachesStore.hasCoaches()">
-				<CoachItem v-for="coach in coachesStore.coaches" :key="coach.id" :="coach"/>
-			</ul>
-			<h3 v-else>No coaches found.</h3>
-		</BaseCard>
-	</section>
+  <section>
+    <CoachFilter @change-filter="setFilters" />
+  </section>
+  <section>
+    <BaseCard>
+      <div class="controls">
+        <BaseButton mode="outline">Refresh</BaseButton>
+        <BaseButton link to="/register">Register as Coach</BaseButton>
+      </div>
+      <ul v-if="coachesStore.hasCoaches()">
+        <CoachItem v-for="coach in filteredCoaches" :key="coach.id" :="coach" />
+      </ul>
+      <h3 v-else>No coaches found.</h3>
+    </BaseCard>
+  </section>
 </template>
 
 <script setup>
 import { useCoachesStore } from '../../stores/coaches';
 import CoachItem from '../../components/coaches/CoachItem.vue';
+import CoachFilter from '../../components/coaches/CoachFilter.vue';
+import { computed, ref } from 'vue';
 
 const coachesStore = useCoachesStore();
+
+const activeFilters = ref({
+  frontend: true,
+  backend: true,
+  career: true,
+});
+
+const filteredCoaches = computed(() => {
+  return coachesStore.coaches.filter((coach) => {
+    if (activeFilters.value.frontend && coach.areas.includes('frontend')) {
+      return true;
+    } if (activeFilters.value.backend && coach.areas.includes('backend')) {
+      return true;
+    } if (activeFilters.value.career && coach.areas.includes('career')) {
+      return true;
+    }
+    return false;
+  });
+});
+
+function setFilters(updatedFilters) {
+  activeFilters.value = updatedFilters;
+}
 </script>
 
 <style scoped>
