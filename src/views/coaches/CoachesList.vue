@@ -5,8 +5,8 @@
 	<section>
 		<BaseCard>
 			<div class="controls">
-				<button>Refresh</button>
-				<RouterLink to="/register">Register as Coach</RouterLink>
+				<BaseButton mode="outline">Refresh</BaseButton>
+				<BaseButton link to="/register">Register as Coach</BaseButton>
 			</div>
 			<ul v-if="coachesStore.hasCoaches()">
 				<CoachItem v-for="coach in coachesStore.coaches" :key="coach.id" :="coach"/>

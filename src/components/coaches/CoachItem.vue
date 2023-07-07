@@ -6,8 +6,8 @@
 			<span v-for="area in props.areas" :key="area">{{ area }}</span>
 		</div>
 		<div class="actions">
-			<RouterLink :to="coachContactLink">Contact</RouterLink>
-			<RouterLink :to="coachDetailsLink">View Details</RouterLink>
+			<BaseButton mode="outline" link :to="coachContactLink">Contact</BaseButton>
+			<BaseButton link :to="coachDetailsLink">View Details</BaseButton>
 		</div>
 	</li>
 </template>
