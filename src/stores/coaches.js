@@ -25,5 +25,16 @@ export const useCoachesStore = defineStore('coaches', () => {
   function hasCoaches() {
     return coaches.value && coaches.value.length > 0;
   }
-  return { coaches, hasCoaches };
+  function registerCoach(data) {
+    const coachData = {
+      id: `c${coaches.value.length + 1}`,
+      firstName: data.first,
+      lastName: data.last,
+      description: data.desc,
+      hourlyRate: data.rate,
+      areas: data.areas,
+    };
+    coaches.value.push(coachData);
+  }
+  return { coaches, hasCoaches, registerCoach };
 });

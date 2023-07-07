@@ -38,6 +38,8 @@
 <script setup>
 import { ref } from 'vue';
 
+const emit = defineEmits(['save-data']);
+
 const firstName = ref('');
 const lastName = ref('');
 const description = ref('');
@@ -45,14 +47,15 @@ const rate = ref(null);
 const areas = ref([]);
 
 function submitForm() {
-  const formDate = {
+  const formData = {
     first: firstName.value,
     last: lastName.value,
     desc: description.value,
     rate: rate.value,
     areas: areas.value,
   };
-  console.log(formDate);
+  console.log(formData);
+  emit('save-data', formData);
 }
 </script>
 
