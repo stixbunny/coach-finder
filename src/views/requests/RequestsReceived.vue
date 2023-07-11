@@ -5,7 +5,7 @@
         <h2>Requests Received</h2>
         <ul v-if="requestsStore.hasRequests()">
           <RequestItem
-            v-for="req in requestsStore.requests"
+            v-for="req in requestsStore.myRequests()"
             :key="req.id"
             :email="req.userEmail"
             :message="req.message"
