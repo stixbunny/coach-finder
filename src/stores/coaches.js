@@ -5,6 +5,7 @@ import { useMainStore } from './main';
 export const useCoachesStore = defineStore('coaches', () => {
   const firebaseUrl = import.meta.env.VITE_API_FIREBASE;
   const user = useMainStore();
+  const lastFetch = ref(null);
   const coaches = ref([
     {
       id: 'c1',
@@ -60,7 +61,9 @@ export const useCoachesStore = defineStore('coaches', () => {
     coaches.value = fetchedCoaches;
   }
 
-  async function loadCoaches() {
+  async function loadCoaches(forceRefresh) {
+    if (!forceRefresh && !shouldUpdate()) return;
+
     const response = await fetch(`${import.meta.env.VITE_API_FIREBASE}/coaches.json`);
     const responseData = await response.json();
     if (!response.ok) {
@@ -80,6 +83,20 @@ export const useCoachesStore = defineStore('coaches', () => {
       coaches.push(coach);
     }
     setCoaches(coaches);
+    setFetchTimestamp();
+  }
+
+  function setFetchTimestamp() {
+    lastFetch.value = new Date().getTime();
+  }
+
+  function shouldUpdate() {
+    const lastFetched = lastFetch.value;
+    if (!lastFetched) {
+      return true;
+    }
+    const currentTimeStamp = new Date().getTime();
+    return (currentTimeStamp - lastFetched) / 1000 > 60;
   }
 
   return { coaches, hasCoaches, registerCoach, loadCoaches };

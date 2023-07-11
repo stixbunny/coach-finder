@@ -8,7 +8,7 @@
   <section>
     <BaseCard>
       <div class="controls">
-        <BaseButton mode="outline" @click="loadCoaches">Refresh</BaseButton>
+        <BaseButton mode="outline" @click="loadCoaches(true)">Refresh</BaseButton>
         <BaseButton v-if="!isCoach && !isLoading" link to="/register">Register as Coach</BaseButton>
       </div>
       <div v-if="isLoading">
@@ -68,10 +68,10 @@ function setFilters(updatedFilters) {
   activeFilters.value = updatedFilters;
 }
 
-async function loadCoaches() {
+async function loadCoaches(refresh = false) {
   isLoading.value = true;
   try {
-    await coachesStore.loadCoaches();
+    await coachesStore.loadCoaches(refresh);
   } catch (e) {
     error.value = e.message || 'Something went wrong!';
   }
