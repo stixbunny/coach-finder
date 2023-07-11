@@ -6,9 +6,12 @@
     <BaseCard>
       <div class="controls">
         <BaseButton mode="outline" @click="loadCoaches">Refresh</BaseButton>
-        <BaseButton v-if="!isCoach" link to="/register">Register as Coach</BaseButton>
+        <BaseButton v-if="!isCoach && !isLoading" link to="/register">Register as Coach</BaseButton>
       </div>
-      <ul v-if="coachesStore.hasCoaches()">
+      <div v-if="isLoading">
+        <BaseSpinner></BaseSpinner>
+      </div>
+      <ul v-else-if="hasCoaches">
         <CoachItem v-for="coach in filteredCoaches" :key="coach.id" :="coach" />
       </ul>
       <h3 v-else>No coaches found.</h3>
@@ -27,6 +30,7 @@ import { onBeforeMount } from 'vue';
 const coachesStore = useCoachesStore();
 const mainStore = useMainStore();
 
+const isLoading = ref(false);
 const activeFilters = ref({
   frontend: true,
   backend: true,
@@ -52,12 +56,18 @@ const isCoach = computed(() => {
   return mainStore.isCoach();
 });
 
+const hasCoaches = computed(() => {
+  return !isLoading.value && coachesStore.hasCoaches();
+})
+
 function setFilters(updatedFilters) {
   activeFilters.value = updatedFilters;
 }
 
-function loadCoaches() {
-  coachesStore.loadCoaches();
+async function loadCoaches() {
+  isLoading.value = true;
+  await coachesStore.loadCoaches();
+  isLoading.value = false;
 }
 
 onBeforeMount(() => {
