@@ -4,6 +4,8 @@ import { useMainStore } from './main';
 import { ref } from 'vue';
 
 export const useRequestsStore = defineStore('requests', () => {
+  const firebaseUrl = import.meta.env.VITE_API_FIREBASE;
+
   const user = useMainStore();
   
   const requests = ref([]);

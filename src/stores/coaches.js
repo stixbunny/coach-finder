@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { useMainStore } from './main';
 
 export const useCoachesStore = defineStore('coaches', () => {
+  const firebaseUrl = import.meta.env.VITE_API_FIREBASE;
   const user = useMainStore();
   const coaches = ref([
     {
@@ -39,7 +40,7 @@ export const useCoachesStore = defineStore('coaches', () => {
     };
 
     const response = await fetch(
-      `${import.meta.env.VITE_API_FIREBASE}/coaches/${user.userId}.json`,
+      `${firebaseUrl}/coaches/${user.userId}.json`,
       {
         method: 'PUT',
         body: JSON.stringify(coachData),
