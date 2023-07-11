@@ -37,7 +37,7 @@ export const useCoachesStore = defineStore('coaches', () => {
     };
 
     const response = await fetch(
-      `https://vue-coaches-3b3ce-default-rtdb.firebaseio.com/coaches/${user.userId}.json`,
+      `${import.meta.env.VITE_API_FIREBASE}/coaches/${user.userId}.json`,
       {
         method: 'PUT',
         body: JSON.stringify(coachData),
