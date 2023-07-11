@@ -4,8 +4,13 @@
       <header>
         <h2>Requests Received</h2>
         <ul v-if="requestsStore.hasRequests()">
-					
-				</ul>
+          <RequestItem
+            v-for="req in requestsStore.requests"
+            :key="req.id"
+            :email="req.userEmail"
+            :message="req.message"
+          ></RequestItem>
+        </ul>
         <h3 v-else>You haven't received any requests yet!</h3>
       </header>
     </BaseCard>
@@ -13,7 +18,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import RequestItem from '../../components/requests/RequestItem.vue';
 import { useRequestsStore } from '../../stores/requests';
 
 const requestsStore = useRequestsStore();
