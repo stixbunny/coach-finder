@@ -17,6 +17,13 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRequestsStore } from '../../stores/requests';
+import { useRoute, useRouter } from 'vue-router';
+
+const requestsStore = useRequestsStore();
+
+const route = useRoute();
+const router = useRouter();
 
 const email = ref('');
 const message = ref('');
@@ -28,6 +35,12 @@ function submitForm() {
     formIsValid.value = false;
     return;
   }
+  requestsStore.addRequest({
+    coachId: route.params['id'],
+    email: email.value,
+    message: message.value,
+  });
+  router.replace({ name: 'coaches' });
 }
 </script>
 
