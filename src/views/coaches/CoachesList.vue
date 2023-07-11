@@ -1,4 +1,7 @@
 <template>
+  <BaseDialog :show="!!error" title="An error ocurred!" @close="handleError">
+    <p>{{ error }}</p>
+  </BaseDialog>
   <section>
     <CoachFilter @change-filter="setFilters" />
   </section>
@@ -30,6 +33,7 @@ import { onBeforeMount } from 'vue';
 const coachesStore = useCoachesStore();
 const mainStore = useMainStore();
 
+const error = ref(null);
 const isLoading = ref(false);
 const activeFilters = ref({
   frontend: true,
@@ -58,7 +62,7 @@ const isCoach = computed(() => {
 
 const hasCoaches = computed(() => {
   return !isLoading.value && coachesStore.hasCoaches();
-})
+});
 
 function setFilters(updatedFilters) {
   activeFilters.value = updatedFilters;
@@ -66,8 +70,16 @@ function setFilters(updatedFilters) {
 
 async function loadCoaches() {
   isLoading.value = true;
-  await coachesStore.loadCoaches();
+  try {
+    await coachesStore.loadCoaches();
+  } catch (e) {
+    error.value = e.message || 'Something went wrong!';
+  }
   isLoading.value = false;
+}
+
+function handleError() {
+  error.value = null;
 }
 
 onBeforeMount(() => {

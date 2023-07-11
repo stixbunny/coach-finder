@@ -63,7 +63,8 @@ export const useCoachesStore = defineStore('coaches', () => {
     const response = await fetch(`${import.meta.env.VITE_API_FIREBASE}/coaches.json`);
     const responseData = await response.json();
     if (!response.ok) {
-      //...
+      const error = new Error(responseData.message || 'Failed to fetch!');
+      throw error;
     }
     const coaches = [];
     for (const key in responseData) {
