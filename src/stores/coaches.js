@@ -27,16 +27,30 @@ export const useCoachesStore = defineStore('coaches', () => {
   function hasCoaches() {
     return coaches.value && coaches.value.length > 0;
   }
-  function registerCoach(data) {
+  async function registerCoach(data) {
     const coachData = {
-      id: user.userId,
       firstName: data.first,
       lastName: data.last,
       description: data.desc,
       hourlyRate: data.rate,
       areas: data.areas,
     };
-    coaches.value.push(coachData);
+
+    const response = await fetch(
+      `https://vue-coaches-3b3ce-default-rtdb.firebaseio.com/coaches/${user.userId}.json`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(coachData),
+      }
+    );
+    //const responseData = await response.json();
+    if (!response.ok) {
+      //error
+    }
+    coaches.value.push({
+      ...coachData,
+      id: user.userId,
+    });
   }
   return { coaches, hasCoaches, registerCoach };
 });
