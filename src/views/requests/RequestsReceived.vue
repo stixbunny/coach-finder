@@ -1,24 +1,26 @@
 <template>
-  <BaseDialog :show="!!error" title="An error ocurred!" @close="handleError">
-    <p>{{ error }}</p>
-  </BaseDialog>
-  <section>
-    <BaseCard>
-      <header>
-        <h2>Requests Received</h2>
-      </header>
-      <BaseSpinner v-if="isLoading"></BaseSpinner>
-      <ul v-else-if="requestsStore.hasRequests() && !isLoading">
-        <RequestItem
-          v-for="req in requestsStore.requests"
-          :key="req.id"
-          :email="req.userEmail"
-          :message="req.message"
-        ></RequestItem>
-      </ul>
-      <h3 v-else>You haven't received any requests yet!</h3>
-    </BaseCard>
-  </section>
+  <div>
+    <BaseDialog :show="!!error" title="An error ocurred!" @close="handleError">
+      <p>{{ error }}</p>
+    </BaseDialog>
+    <section>
+      <BaseCard>
+        <header>
+          <h2>Requests Received</h2>
+        </header>
+        <BaseSpinner v-if="isLoading"></BaseSpinner>
+        <ul v-else-if="requestsStore.hasRequests() && !isLoading">
+          <RequestItem
+            v-for="req in requestsStore.requests"
+            :key="req.id"
+            :email="req.userEmail"
+            :message="req.message"
+          ></RequestItem>
+        </ul>
+        <h3 v-else>You haven't received any requests yet!</h3>
+      </BaseCard>
+    </section>
+  </div>
 </template>
 
 <script setup>
@@ -36,7 +38,7 @@ async function loadRequests() {
     await requestsStore.fetchRequests();
   } catch (e) {
     error.value = e.message || 'Something failed!';
-  } 
+  }
   isLoading.value = false;
 }
 
