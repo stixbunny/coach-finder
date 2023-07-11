@@ -14,5 +14,9 @@ export const useRequestsStore = defineStore('requests', () => {
     };
     requests.value.push(newRequest);
   }
-  return { requests, addRequest };
+
+  function hasRequests() {
+    return requests.value && requests.value.length > 0;
+  }
+  return { requests, addRequest, hasRequests };
 });
