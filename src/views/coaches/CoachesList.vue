@@ -5,7 +5,7 @@
   <section>
     <BaseCard>
       <div class="controls">
-        <BaseButton mode="outline">Refresh</BaseButton>
+        <BaseButton mode="outline" @click="loadCoaches">Refresh</BaseButton>
         <BaseButton v-if="!isCoach" link to="/register">Register as Coach</BaseButton>
       </div>
       <ul v-if="coachesStore.hasCoaches()">
@@ -22,6 +22,7 @@ import CoachItem from '../../components/coaches/CoachItem.vue';
 import CoachFilter from '../../components/coaches/CoachFilter.vue';
 import { computed, ref } from 'vue';
 import { useMainStore } from '../../stores/main';
+import { onBeforeMount } from 'vue';
 
 const coachesStore = useCoachesStore();
 const mainStore = useMainStore();
@@ -36,9 +37,11 @@ const filteredCoaches = computed(() => {
   return coachesStore.coaches.filter((coach) => {
     if (activeFilters.value.frontend && coach.areas.includes('frontend')) {
       return true;
-    } if (activeFilters.value.backend && coach.areas.includes('backend')) {
+    }
+    if (activeFilters.value.backend && coach.areas.includes('backend')) {
       return true;
-    } if (activeFilters.value.career && coach.areas.includes('career')) {
+    }
+    if (activeFilters.value.career && coach.areas.includes('career')) {
       return true;
     }
     return false;
@@ -46,12 +49,20 @@ const filteredCoaches = computed(() => {
 });
 
 const isCoach = computed(() => {
-	return mainStore.isCoach();
-})
+  return mainStore.isCoach();
+});
 
 function setFilters(updatedFilters) {
   activeFilters.value = updatedFilters;
 }
+
+function loadCoaches() {
+  coachesStore.loadCoaches();
+}
+
+onBeforeMount(() => {
+  loadCoaches();
+});
 </script>
 
 <style scoped>

@@ -24,9 +24,11 @@ export const useCoachesStore = defineStore('coaches', () => {
       hourlyRate: 30,
     },
   ]);
+
   function hasCoaches() {
     return coaches.value && coaches.value.length > 0;
   }
+
   async function registerCoach(data) {
     const coachData = {
       firstName: data.first,
@@ -52,5 +54,31 @@ export const useCoachesStore = defineStore('coaches', () => {
       id: user.userId,
     });
   }
-  return { coaches, hasCoaches, registerCoach };
+
+  function setCoaches(fetchedCoaches) {
+    coaches.value = fetchedCoaches;
+  }
+
+  async function loadCoaches() {
+    const response = await fetch(`${import.meta.env.VITE_API_FIREBASE}/coaches.json`);
+    const responseData = await response.json();
+    if (!response.ok) {
+      //...
+    }
+    const coaches = [];
+    for (const key in responseData) {
+      const coach = {
+        id: key,
+        firstName: responseData[key].firstName,
+        lastName: responseData[key].lastName,
+        description: responseData[key].description,
+        hourlyRate: responseData[key].hourlyRate,
+        areas: responseData[key].areas,
+      };
+      coaches.push(coach);
+    }
+    setCoaches(coaches);
+  }
+
+  return { coaches, hasCoaches, registerCoach, loadCoaches };
 });
