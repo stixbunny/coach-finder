@@ -5,6 +5,7 @@ import CoachRegistration from '../views/coaches/CoachRegistration.vue';
 import ContactCoach from '../views/requests/ContactCoach.vue';
 import RequestsReceived from '../views/requests/RequestsReceived.vue';
 import NotFound from '../views/NotFound.vue';
+import UserAuth from '../views/auth/UserAuth.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,12 +13,12 @@ const router = createRouter({
     {
       path: '/',
       redirect: '/coaches',
-      name: 'index'
+      name: 'index',
     },
     {
       path: '/coaches',
       component: CoachesList,
-      name: 'coaches'
+      name: 'coaches',
     },
     {
       name: 'coach-detail',
@@ -41,6 +42,11 @@ const router = createRouter({
       name: 'requests',
       path: '/requests',
       component: RequestsReceived,
+    },
+    {
+      name: 'auth',
+      path: '/auth',
+      component: UserAuth,
     },
     {
       name: 'not-found',
