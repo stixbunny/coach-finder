@@ -1,20 +1,34 @@
 <script setup>
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
+import { useMainStore } from '../../stores/main';
+import { computed } from 'vue';
+
+const mainStore = useMainStore();
+const router = useRouter();
+const indexLink = router.resolve({ name: 'index' }).path;
+const coachesLink = router.resolve({ name: 'coaches' }).path;
+const requestsLink = router.resolve({ name: 'requests' }).path;
+const authLink = router.resolve({ name: 'auth' }).path;
+
+const isLoggedIn = computed(() => mainStore.isAuthenticated());
 </script>
 
 <template>
   <header>
     <nav>
       <h1>
-				<RouterLink to="/">Find a Coach</RouterLink>
-			</h1>
+        <RouterLink :to="indexLink">Find a Coach</RouterLink>
+      </h1>
       <ul>
         <li>
-					<RouterLink to="/coaches">All Coaches</RouterLink>
-				</li>
-        <li>
-					<RouterLink to="/requests">Requests</RouterLink>
-				</li>
+          <RouterLink :to="coachesLink">All Coaches</RouterLink>
+        </li>
+        <li v-if="isLoggedIn">
+          <RouterLink :to="requestsLink">Requests</RouterLink>
+        </li>
+        <li v-else>
+          <RouterLink :to="authLink">Login</RouterLink>
+        </li>
       </ul>
     </nav>
   </header>

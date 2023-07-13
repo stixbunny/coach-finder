@@ -9,6 +9,10 @@ export const useMainStore = defineStore('main', () => {
   const token = ref(null);
   const tokenExpiration = ref(null);
 
+  function isAuthenticated() {
+    return !!token.value;
+  }
+
   function isCoach() {
     return coachesStore.coaches.some((coach) => coach.id === userId.value);
   }
@@ -75,5 +79,5 @@ export const useMainStore = defineStore('main', () => {
     });
   }
 
-  return { userId, isCoach, signIn, signUp, token };
+  return { userId, isCoach, signIn, signUp, token, isAuthenticated };
 });

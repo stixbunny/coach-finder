@@ -10,9 +10,10 @@
       <BaseCard>
         <div class="controls">
           <BaseButton mode="outline" @click="loadCoaches(true)">Refresh</BaseButton>
-          <BaseButton v-if="!isCoach && !isLoading" link to="/register"
-            >Register as Coach</BaseButton
-          >
+          <BaseButton link :to="authLink" v-if="!isLoggedIn">Login</BaseButton>
+          <BaseButton v-if="isLoggedIn && !isCoach && !isLoading" link :to="registerLink">
+            Register as Coach
+          </BaseButton>
         </div>
         <div v-if="isLoading">
           <BaseSpinner></BaseSpinner>
@@ -33,9 +34,11 @@ import CoachFilter from '../../components/coaches/CoachFilter.vue';
 import { computed, ref } from 'vue';
 import { useMainStore } from '../../stores/main';
 import { onBeforeMount } from 'vue';
+import { useRouter } from 'vue-router';
 
 const coachesStore = useCoachesStore();
 const mainStore = useMainStore();
+const router = useRouter();
 
 const error = ref(null);
 const isLoading = ref(false);
@@ -60,8 +63,20 @@ const filteredCoaches = computed(() => {
   });
 });
 
+const authLink = computed(() => {
+  return router.resolve({ name: 'auth' }).path;
+});
+
+const registerLink = computed(() => {
+  return router.resolve({ name: 'register' }).path;
+});
+
 const isCoach = computed(() => {
   return mainStore.isCoach();
+});
+
+const isLoggedIn = computed(() => {
+  return mainStore.isAuthenticated();
 });
 
 const hasCoaches = computed(() => {
@@ -70,7 +85,7 @@ const hasCoaches = computed(() => {
 
 function setFilters(updatedFilters) {
   activeFilters.value = updatedFilters;
-}
+};
 
 async function loadCoaches(refresh = false) {
   isLoading.value = true;
@@ -80,11 +95,11 @@ async function loadCoaches(refresh = false) {
     error.value = e.message || 'Something went wrong!';
   }
   isLoading.value = false;
-}
+};
 
 function handleError() {
   error.value = null;
-}
+};
 
 onBeforeMount(() => {
   loadCoaches();
