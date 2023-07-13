@@ -34,18 +34,46 @@ export const useMainStore = defineStore('main', () => {
     const responseData = await response.json();
     if (!response.ok) {
       console.log(responseData);
-      const error = new Error(responseData.message || 'Failed to authenticate.');
+      const error = new Error(
+        responseData.message || 'Failed to authenticate. Check your login data.'
+      );
       throw error;
     }
     console.log(responseData);
-		setUser({
-			token: responseData.idToken,
-			userId: responseData.localId,
-			tokenExpiration: responseData.expiresIn,
-		})
+    setUser({
+      token: responseData.idToken,
+      userId: responseData.localId,
+      tokenExpiration: responseData.expiresIn,
+    });
   }
 
-  function login() {}
+  async function signIn(user) {
+    const response = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          email: user.email,
+          password: user.password,
+          returnSecureToken: true,
+        }),
+      }
+    );
+    const responseData = await response.json();
+    if (!response.ok) {
+      console.log(responseData);
+      const error = new Error(
+        responseData.message || 'Failed to authenticate. Check your login data.'
+      );
+      throw error;
+    }
+    console.log(responseData);
+    setUser({
+      token: responseData.idToken,
+      userId: responseData.localId,
+      tokenExpiration: responseData.expiresIn,
+    });
+  }
 
-  return { userId, isCoach, login, signUp };
+  return { userId, isCoach, signIn, signUp, token };
 });

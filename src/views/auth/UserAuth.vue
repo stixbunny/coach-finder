@@ -1,21 +1,31 @@
 <template>
-  <BaseCard>
-    <form @submit.prevent="submitForm">
-      <div class="form-control">
-        <label for="email">E-mail</label>
-        <input type="email" id="email" v-model.trim="email" />
-      </div>
-      <div class="form-control">
-        <label for="password">Password</label>
-        <input type="password" id="password" v-model.trim="password" />
-      </div>
-      <p v-if="!formIsValid">
-        Please enter a valid email and password (must be at least 6 characters long)
-      </p>
-      <BaseButton>{{ submitButtonCaption }}</BaseButton>
-      <BaseButton type="button" mode="flat" @click="switchAuthMode">{{ switchModeButtonCaption }}</BaseButton>
-    </form>
-  </BaseCard>
+  <div>
+    <BaseDialog :show="!!error" title="An error ocurred" @close="handleError">
+      <p>{{ error }}</p>
+    </BaseDialog>
+    <BaseDialog :show="isLoading" title="Authenticating..." fixed>
+      <BaseSpinner></BaseSpinner>
+    </BaseDialog>
+    <BaseCard>
+      <form @submit.prevent="submitForm">
+        <div class="form-control">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" v-model.trim="email" />
+        </div>
+        <div class="form-control">
+          <label for="password">Password</label>
+          <input type="password" id="password" v-model.trim="password" />
+        </div>
+        <p v-if="!formIsValid">
+          Please enter a valid email and password (must be at least 6 characters long)
+        </p>
+        <BaseButton>{{ submitButtonCaption }}</BaseButton>
+        <BaseButton type="button" mode="flat" @click="switchAuthMode">{{
+          switchModeButtonCaption
+        }}</BaseButton>
+      </form>
+    </BaseCard>
+  </div>
 </template>
 
 <script setup>
@@ -27,8 +37,10 @@ const email = ref('');
 const password = ref('');
 const formIsValid = ref(true);
 const mode = ref('login');
+const isLoading = ref(false);
+const error = ref(null);
 
-function submitForm() {
+async function submitForm() {
   formIsValid.value = true;
   if (
     email.value === '' ||
@@ -38,14 +50,22 @@ function submitForm() {
     formIsValid.value = false;
     return;
   }
-  if (mode.value === 'login') {
-    //
-  } else {
-    mainStore.signUp({
-      email: email.value,
-      password: password.value,
-    })
+  isLoading.value = true;
+  const userData = {
+    email: email.value,
+    password: password.value,
   }
+  try {
+    if (mode.value === 'login') {
+      await mainStore.signIn(userData)
+    } else {
+      await mainStore.signUp(userData);
+    }
+  } catch (e) {
+    console.log("error!")
+    error.value = e.message || 'Failed to authenticate, please try agin later.';
+  }
+  isLoading.value = false;
 }
 
 function switchAuthMode() {
@@ -56,21 +76,25 @@ function switchAuthMode() {
   }
 }
 
+function handleError() {
+  error.value = null;
+}
+
 const submitButtonCaption = computed(() => {
-	if (mode.value === 'login') {
-		return 'Login';
-	} else {
-		return 'Signup';
-	}
-})
+  if (mode.value === 'login') {
+    return 'Login';
+  } else {
+    return 'Signup';
+  }
+});
 
 const switchModeButtonCaption = computed(() => {
-	if (mode.value === 'login') {
-		return 'Signup instead';
-	} else {
-		return 'Login instead';
-	}
-})
+  if (mode.value === 'login') {
+    return 'Signup instead';
+  } else {
+    return 'Login instead';
+  }
+});
 </script>
 
 <style scoped>

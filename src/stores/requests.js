@@ -30,8 +30,9 @@ export const useRequestsStore = defineStore('requests', () => {
   }
 
   async function fetchRequests() {
+    const token = user.token;
     const coachId = user.userId;
-    const response = await fetch(`${firebaseUrl}/requests/${coachId}.json`);
+    const response = await fetch(`${firebaseUrl}/requests/${coachId}.json?auth=${token}`);
     const responseData = await response.json();
     if (!response.ok) {
       const error = new Error(responseData.message || 'Failed to fetch requests.');
