@@ -11,6 +11,10 @@ const requestsLink = router.resolve({ name: 'requests' }).path;
 const authLink = router.resolve({ name: 'auth' }).path;
 
 const isLoggedIn = computed(() => mainStore.isAuthenticated());
+
+function logout() {
+  mainStore.signOut();
+}
 </script>
 
 <template>
@@ -28,6 +32,9 @@ const isLoggedIn = computed(() => mainStore.isAuthenticated());
         </li>
         <li v-else>
           <RouterLink :to="authLink">Login</RouterLink>
+        </li>
+        <li v-if="isLoggedIn">
+          <BaseButton @click="logout">Logout</BaseButton>
         </li>
       </ul>
     </nav>

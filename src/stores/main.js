@@ -79,5 +79,11 @@ export const useMainStore = defineStore('main', () => {
     });
   }
 
-  return { userId, isCoach, signIn, signUp, token, isAuthenticated };
+  function signOut() {
+    token.value = null;
+    userId.value = null;
+    tokenExpiration.value = null;
+  }
+
+  return { userId, token, isAuthenticated, isCoach, signIn, signUp, signOut };
 });
