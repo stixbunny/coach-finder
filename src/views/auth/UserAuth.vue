@@ -31,8 +31,11 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useMainStore } from '../../stores/main';
+import { useRouter } from 'vue-router';
 
 const mainStore = useMainStore();
+const router = useRouter();
+const redirectUrlName = router.currentRoute.value.query.redirect || 'coaches';
 const email = ref('');
 const password = ref('');
 const formIsValid = ref(true);
@@ -54,15 +57,16 @@ async function submitForm() {
   const userData = {
     email: email.value,
     password: password.value,
-  }
+  };
   try {
     if (mode.value === 'login') {
-      await mainStore.signIn(userData)
+      await mainStore.signIn(userData);
     } else {
       await mainStore.signUp(userData);
     }
+    router.replace({ name: redirectUrlName });
   } catch (e) {
-    console.log("error!")
+    console.log('error!');
     error.value = e.message || 'Failed to authenticate, please try agin later.';
   }
   isLoading.value = false;

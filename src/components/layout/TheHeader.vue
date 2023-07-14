@@ -14,6 +14,7 @@ const isLoggedIn = computed(() => mainStore.isAuthenticated());
 
 function logout() {
   mainStore.signOut();
+  router.replace({ name: 'coaches' });
 }
 </script>
 

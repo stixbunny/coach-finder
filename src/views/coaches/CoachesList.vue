@@ -10,7 +10,9 @@
       <BaseCard>
         <div class="controls">
           <BaseButton mode="outline" @click="loadCoaches(true)">Refresh</BaseButton>
-          <BaseButton link :to="authLink" v-if="!isLoggedIn">Login</BaseButton>
+          <BaseButton link :to="authLink" v-if="!isLoggedIn"
+            >Login to Register as a Coach</BaseButton
+          >
           <BaseButton v-if="isLoggedIn && !isCoach && !isLoading" link :to="registerLink">
             Register as Coach
           </BaseButton>
@@ -64,7 +66,7 @@ const filteredCoaches = computed(() => {
 });
 
 const authLink = computed(() => {
-  return router.resolve({ name: 'auth' }).path;
+  return router.resolve({ name: 'auth', query: { redirect: 'register' } }).fullPath;
 });
 
 const registerLink = computed(() => {
@@ -85,7 +87,7 @@ const hasCoaches = computed(() => {
 
 function setFilters(updatedFilters) {
   activeFilters.value = updatedFilters;
-};
+}
 
 async function loadCoaches(refresh = false) {
   isLoading.value = true;
@@ -95,11 +97,11 @@ async function loadCoaches(refresh = false) {
     error.value = e.message || 'Something went wrong!';
   }
   isLoading.value = false;
-};
+}
 
 function handleError() {
   error.value = null;
-};
+}
 
 onBeforeMount(() => {
   loadCoaches();
