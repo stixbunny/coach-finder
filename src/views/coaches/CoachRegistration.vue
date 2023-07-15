@@ -1,10 +1,10 @@
 <template>
-	<section>
-		<BaseCard>
-			<h2>Register as a coach now!</h2>
-			<CoachForm @save-data="saveData"></CoachForm>
-		</BaseCard>
-	</section>
+  <section>
+    <BaseCard>
+      <h2>Register as a coach now!</h2>
+      <CoachForm @save-data="saveData"></CoachForm>
+    </BaseCard>
+  </section>
 </template>
 
 <script setup>
@@ -16,7 +16,7 @@ const router = useRouter();
 const coachesStore = useCoachesStore();
 
 function saveData(data) {
-	coachesStore.registerCoach(data);
-	router.replace({ name: 'coaches' })
+  coachesStore.registerCoach(data);
+  router.replace({ name: 'coaches' });
 }
 </script>

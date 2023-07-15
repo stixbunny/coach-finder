@@ -102,5 +102,15 @@ export const useMainStore = defineStore('main', () => {
     didAutoSignOut.value = true;
   }
 
-  return { userId, token, didAutoSignOut, trySignIn, isAuthenticated, isCoach, signIn, signUp, signOut };
+  return {
+    userId,
+    token,
+    didAutoSignOut,
+    trySignIn,
+    isAuthenticated,
+    isCoach,
+    signIn,
+    signUp,
+    signOut,
+  };
 });

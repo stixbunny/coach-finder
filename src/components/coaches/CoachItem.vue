@@ -1,15 +1,15 @@
 <template>
-	<li>
-		<h3>{{ fullName }}</h3>
-		<h4>${{ props.hourlyRate }}/hour</h4>
-		<div>
-			<BaseBadge v-for="area in props.areas" :key="area" :type="area" :title="area"></BaseBadge>
-		</div>
-		<div class="actions">
-			<BaseButton mode="outline" link :to="coachContactLink">Contact</BaseButton>
-			<BaseButton link :to="coachDetailsLink">View Details</BaseButton>
-		</div>
-	</li>
+  <li>
+    <h3>{{ fullName }}</h3>
+    <h4>${{ props.hourlyRate }}/hour</h4>
+    <div>
+      <BaseBadge v-for="area in props.areas" :key="area" :type="area" :title="area"></BaseBadge>
+    </div>
+    <div class="actions">
+      <BaseButton mode="outline" link :to="coachContactLink">Contact</BaseButton>
+      <BaseButton link :to="coachDetailsLink">View Details</BaseButton>
+    </div>
+  </li>
 </template>
 
 <script setup>
@@ -19,23 +19,23 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const props = defineProps({
-	id: String,
-	firstName: String,
-	lastName: String,
-	hourlyRate: Number,
-	areas: Array,
+  id: String,
+  firstName: String,
+  lastName: String,
+  hourlyRate: Number,
+  areas: Array,
 });
 
 const fullName = computed(() => {
-	return `${props.firstName} ${props.lastName}`;
+  return `${props.firstName} ${props.lastName}`;
 });
 
 const coachContactLink = computed(() => {
-	return router.resolve({name: 'contact', params: { id: props.id }}).path;
+  return router.resolve({ name: 'contact', params: { id: props.id } }).path;
 });
 
 const coachDetailsLink = computed(() => {
-	return router.resolve({name: 'coach-detail', params: { id: props.id }}).path
+  return router.resolve({ name: 'coach-detail', params: { id: props.id } }).path;
 });
 </script>
 

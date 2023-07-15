@@ -40,13 +40,10 @@ export const useCoachesStore = defineStore('coaches', () => {
       areas: data.areas,
     };
     const token = user.token;
-    const response = await fetch(
-      `${firebaseUrl}/coaches/${user.userId}.json?auth=${token}`,
-      {
-        method: 'PUT',
-        body: JSON.stringify(coachData),
-      }
-    );
+    const response = await fetch(`${firebaseUrl}/coaches/${user.userId}.json?auth=${token}`, {
+      method: 'PUT',
+      body: JSON.stringify(coachData),
+    });
     //const responseData = await response.json();
     if (!response.ok) {
       //error

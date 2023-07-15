@@ -38,15 +38,33 @@
     <div class="form-control" :class="{ invalid: !areas.isValid }">
       <h3>Areas of expertise</h3>
       <div>
-        <input type="checkbox" value="frontend" id="frontend" v-model="areas.value" @blur="clearValidity(areas)" />
+        <input
+          type="checkbox"
+          value="frontend"
+          id="frontend"
+          v-model="areas.value"
+          @blur="clearValidity(areas)"
+        />
         <label for="frontend">Frontend Development</label>
       </div>
       <div>
-        <input type="checkbox" value="backend" id="backend" v-model="areas.value" @blur="clearValidity(areas)" />
+        <input
+          type="checkbox"
+          value="backend"
+          id="backend"
+          v-model="areas.value"
+          @blur="clearValidity(areas)"
+        />
         <label for="backend">Backend Development</label>
       </div>
       <div>
-        <input type="checkbox" value="career" id="career" v-model="areas.value" @blur="clearValidity(areas)" />
+        <input
+          type="checkbox"
+          value="career"
+          id="career"
+          v-model="areas.value"
+          @blur="clearValidity(areas)"
+        />
         <label for="career">Career Advisory</label>
       </div>
       <p v-if="!areas.isValid">At least one expertise must be selected.</p>
