@@ -1,11 +1,19 @@
 <script setup>
-import { RouterView } from 'vue-router';
+import { RouterView, useRouter } from 'vue-router';
 import TheHeader from './components/layout/TheHeader.vue';
-import { onBeforeMount } from 'vue';
+import { computed, onBeforeMount, watch } from 'vue';
 import { useMainStore } from './stores/main';
+import { storeToRefs } from 'pinia';
 const user = useMainStore();
+const router = useRouter()
+const { didAutoSignOut } = storeToRefs(user);
 onBeforeMount(() => {
   user.trySignIn();
+})
+watch(didAutoSignOut, (currentValue, oldValue) => {
+  if (currentValue && currentValue !== oldValue) {
+    router.replace({name: 'coaches'});
+  }
 })
 </script>
 

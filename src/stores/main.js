@@ -2,21 +2,32 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useCoachesStore } from './coaches';
 
+let timer;
+
 export const useMainStore = defineStore('main', () => {
   const coachesStore = useCoachesStore();
   const userId = ref(null);
   const apiKey = import.meta.env.VITE_API_WEB;
   const token = ref(null);
-  const tokenExpiration = ref(null);
+  const didAutoSignOut = ref(false);
 
   function trySignIn() {
     const _token = localStorage.getItem('token');
     const _userId = localStorage.getItem('userId');
+    const tokenExpiration = localStorage.getItem('tokenExpiration');
+    const expiresIn = +tokenExpiration - new Date().getTime();
+
+    if (expiresIn < 0) {
+      return;
+    }
+
+    timer = setTimeout(() => {
+      autoSignOut();
+    }, expiresIn);
 
     if (_token && _userId) {
       token.value = _token;
       userId.value = _userId;
-      tokenExpiration.value = null;
     }
   }
 
@@ -31,7 +42,6 @@ export const useMainStore = defineStore('main', () => {
   function setUser(user) {
     userId.value = user.userId;
     token.value = user.token;
-    tokenExpiration.value = user.tokenExpiration;
   }
 
   async function signUp(newUser) {
@@ -64,20 +74,34 @@ export const useMainStore = defineStore('main', () => {
       );
       throw error;
     }
+    // const expiresIn = +responseData.expiresIn * 1000;
+    const expiresIn = 5000;
+    const expirationDate = new Date().getTime + expiresIn;
     localStorage.setItem('token', responseData.idToken);
     localStorage.setItem('userId', responseData.localId);
+    localStorage.setItem('tokenExpiration', expirationDate);
+    timer = setTimeout(() => {
+      autoSignOut();
+    }, expiresIn);
     setUser({
       token: responseData.idToken,
       userId: responseData.localId,
-      tokenExpiration: responseData.expiresIn,
     });
   }
 
   function signOut() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('tokenExpiration');
+    clearTimeout(timer);
     token.value = null;
     userId.value = null;
-    tokenExpiration.value = null;
   }
 
-  return { userId, token, trySignIn, isAuthenticated, isCoach, signIn, signUp, signOut };
+  function autoSignOut() {
+    signOut();
+    didAutoSignOut.value = true;
+  }
+
+  return { userId, token, didAutoSignOut, trySignIn, isAuthenticated, isCoach, signIn, signUp, signOut };
 });
