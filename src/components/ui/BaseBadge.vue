@@ -1,7 +1,7 @@
 <template>
   <span class="badge" :class="type">
-		{{ text }}
-	</span>
+    {{ text }}
+  </span>
 </template>
 
 <script setup>
@@ -9,8 +9,8 @@ import { computed } from 'vue';
 
 const props = defineProps(['type', 'title']);
 const text = computed(() => {
-	return props.title.toUpperCase();
-})
+  return props.title.toUpperCase();
+});
 </script>
 
 <style scoped>

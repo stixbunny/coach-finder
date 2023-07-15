@@ -5,16 +5,16 @@ import { onBeforeMount, watch } from 'vue';
 import { useMainStore } from './stores/main';
 import { storeToRefs } from 'pinia';
 const user = useMainStore();
-const router = useRouter()
+const router = useRouter();
 const { didAutoSignOut } = storeToRefs(user);
 onBeforeMount(() => {
   user.trySignIn();
-})
+});
 watch(didAutoSignOut, (currentValue, oldValue) => {
   if (currentValue && currentValue !== oldValue) {
-    router.replace({name: 'coaches'});
+    router.replace({ name: 'coaches' });
   }
-})
+});
 </script>
 
 <template>
@@ -27,14 +27,14 @@ watch(didAutoSignOut, (currentValue, oldValue) => {
 </template>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 * {
   box-sizing: border-box;
 }
 
 html {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 body {
@@ -59,5 +59,4 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
-
 </style>

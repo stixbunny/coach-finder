@@ -30,8 +30,8 @@ const emit = defineEmits(['change-filter']);
 function setFilter(event) {
   const inputId = event.target.id;
   const isActive = event.target.checked;
-	filters.value[inputId] = isActive;
-	emit('change-filter', filters.value);
+  filters.value[inputId] = isActive;
+  emit('change-filter', filters.value);
 }
 </script>
 
