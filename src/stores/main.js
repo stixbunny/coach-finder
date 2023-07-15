@@ -9,6 +9,17 @@ export const useMainStore = defineStore('main', () => {
   const token = ref(null);
   const tokenExpiration = ref(null);
 
+  function trySignIn() {
+    const _token = localStorage.getItem('token');
+    const _userId = localStorage.getItem('userId');
+
+    if (_token && _userId) {
+      token.value = _token;
+      userId.value = _userId;
+      tokenExpiration.value = null;
+    }
+  }
+
   function isAuthenticated() {
     return !!token.value;
   }
@@ -24,45 +35,27 @@ export const useMainStore = defineStore('main', () => {
   }
 
   async function signUp(newUser) {
-    const response = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`,
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          email: newUser.email,
-          password: newUser.password,
-          returnSecureToken: true,
-        }),
-      }
-    );
-    const responseData = await response.json();
-    if (!response.ok) {
-      console.log(responseData);
-      const error = new Error(
-        responseData.message || 'Failed to authenticate. Check your login data.'
-      );
-      throw error;
-    }
-    console.log(responseData);
-    setUser({
-      token: responseData.idToken,
-      userId: responseData.localId,
-      tokenExpiration: responseData.expiresIn,
-    });
+    return auth({ ...newUser, mode: 'signup' });
   }
 
   async function signIn(user) {
-    const response = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          email: user.email,
-          password: user.password,
-          returnSecureToken: true,
-        }),
-      }
-    );
+    return auth({ ...user, mode: 'signin' });
+  }
+
+  async function auth(user) {
+    let url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`;
+    if (user.mode === 'signup') {
+      url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`;
+    }
+
+    const response = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        email: user.email,
+        password: user.password,
+        returnSecureToken: true,
+      }),
+    });
     const responseData = await response.json();
     if (!response.ok) {
       console.log(responseData);
@@ -71,7 +64,8 @@ export const useMainStore = defineStore('main', () => {
       );
       throw error;
     }
-    console.log(responseData);
+    localStorage.setItem('token', responseData.idToken);
+    localStorage.setItem('userId', responseData.localId);
     setUser({
       token: responseData.idToken,
       userId: responseData.localId,
@@ -85,5 +79,5 @@ export const useMainStore = defineStore('main', () => {
     tokenExpiration.value = null;
   }
 
-  return { userId, token, isAuthenticated, isCoach, signIn, signUp, signOut };
+  return { userId, token, trySignIn, isAuthenticated, isCoach, signIn, signUp, signOut };
 });

@@ -1,6 +1,12 @@
 <script setup>
 import { RouterView } from 'vue-router';
 import TheHeader from './components/layout/TheHeader.vue';
+import { onBeforeMount } from 'vue';
+import { useMainStore } from './stores/main';
+const user = useMainStore();
+onBeforeMount(() => {
+  user.trySignIn();
+})
 </script>
 
 <template>
