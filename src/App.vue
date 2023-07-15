@@ -1,7 +1,7 @@
 <script setup>
 import { RouterView, useRouter } from 'vue-router';
 import TheHeader from './components/layout/TheHeader.vue';
-import { computed, onBeforeMount, watch } from 'vue';
+import { onBeforeMount, watch } from 'vue';
 import { useMainStore } from './stores/main';
 import { storeToRefs } from 'pinia';
 const user = useMainStore();
