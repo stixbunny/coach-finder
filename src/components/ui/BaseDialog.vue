@@ -21,33 +21,29 @@
   </teleport>
 </template>
 
-<script>
-export default {
-  props: {
-    show: {
-      type: Boolean,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: false,
-    },
-    fixed: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
+<script setup>
+const props = defineProps({
+  show: {
+    type: Boolean,
+    required: true,
   },
-  emits: ['close'],
-  methods: {
-    tryClose() {
-      if (this.fixed) {
-        return;
-      }
-      this.$emit('close');
-    },
+  title: {
+    type: String,
+    required: false,
   },
-};
+  fixed: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+});
+const emit = defineEmits(['close']);
+function tryClose() {
+  if (props.fixed) {
+    return;
+  }
+  emit('close');
+}
 </script>
 
 <style scoped>
