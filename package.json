@@ -2,9 +2,12 @@
   "name": "coach-finder",
   "version": "0.0.0",
   "private": true,
+  "homepage": "https://stixbunny.github.io/coach-finder/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write src/"
@@ -21,6 +24,7 @@
     "@vue/eslint-config-prettier": "^7.1.0",
     "eslint": "^8.39.0",
     "eslint-plugin-vue": "^9.11.0",
+    "gh-pages": "^5.0.0",
     "prettier": "^2.8.8",
     "vite": "^4.3.9"
   }
