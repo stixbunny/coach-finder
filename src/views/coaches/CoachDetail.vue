@@ -37,7 +37,7 @@ const selectedCoach = ref(null);
 selectedCoach.value = coachesStore.coaches.find((coach) => coach.id === props.id);
 
 const fullName = computed(() => {
-  return `${selectedCoach.value.firstName} ${selectedCoach.value.LastName}`;
+  return `${selectedCoach.value.firstName} ${selectedCoach.value.lastName}`;
 });
 
 const areas = computed(() => {
