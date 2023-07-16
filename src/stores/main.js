@@ -7,7 +7,7 @@ let timer;
 export const useMainStore = defineStore('main', () => {
   const coachesStore = useCoachesStore();
   const userId = ref(null);
-  const apiKey = import.meta.env.VITE_API_WEB;
+  const apiKey = "AIzaSyDACJ9l3vtwGz1xjT2WyyE6vzU7QZt2Zd8";
   const token = ref(null);
   const didAutoSignOut = ref(false);
 

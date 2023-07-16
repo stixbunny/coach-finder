@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { useMainStore } from './main';
 
 export const useCoachesStore = defineStore('coaches', () => {
-  const firebaseUrl = import.meta.env.VITE_API_FIREBASE;
+  const firebaseUrl = "https://vue-coaches-3b3ce-default-rtdb.firebaseio.com";
   const user = useMainStore();
   const lastFetch = ref(null);
   const coaches = ref([
@@ -61,7 +61,7 @@ export const useCoachesStore = defineStore('coaches', () => {
   async function loadCoaches(forceRefresh) {
     if (!forceRefresh && !shouldUpdate()) return;
 
-    const response = await fetch(`${import.meta.env.VITE_API_FIREBASE}/coaches.json`);
+    const response = await fetch(`${firebaseUrl}/coaches.json`);
     const responseData = await response.json();
     if (!response.ok) {
       const error = new Error(responseData.message || 'Failed to fetch!');

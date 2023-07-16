@@ -7,15 +7,6 @@ name: Deploy to Firebase Hosting on merge
     branches:
       - main
 jobs:
-  create-envfile:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Make envfile
-      uses: SpicyPizza/create-envfile@v2.0
-      with:
-        envkey_VITE_API_WEB: ${{ secrets.VITE_API_WEB }}
-        envkey_VITE_API_FIREBASE: ${{ secrets.VITE_API_FIREBASE }}
-        file_name: .env
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
