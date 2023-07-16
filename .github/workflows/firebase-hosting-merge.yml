@@ -12,9 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: (npm ci && npm run build)
-        env:
-          VITE_API_WEB: ${{ secrets.VITE_API_WEB }}
-          VITE_API_FIREBASE: ${{ secrets.VITE_API_FIREBASE }}
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'

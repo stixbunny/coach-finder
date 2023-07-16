@@ -4,7 +4,7 @@ import { useMainStore } from './main';
 import { ref } from 'vue';
 
 export const useRequestsStore = defineStore('requests', () => {
-  const firebaseUrl = import.meta.env.VITE_API_FIREBASE;
+  const firebaseUrl = "https://vue-coaches-3b3ce-default-rtdb.firebaseio.com";
 
   const user = useMainStore();
 
