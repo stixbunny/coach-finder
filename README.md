@@ -1,35 +1,7 @@
-# coach-finder
+# Coach Finder
 
-This template should help get you started developing with Vue 3 in Vite.
+Hello! This project was developed during Maximilian Schwarzmüller's [Udemy Course](https://www.udemy.com/course/vuejs-2-the-complete-guide/). It is the main project of the course. It is a SPA for contacting coaches.
 
-## Recommended IDE Setup
+Users can register into the platform through firebase user authorization and then create their coach profile. Users can also contact coaches listed on the site by leaving them a message. The list of coaches can be filtered by the type of coach. The data is kept on firebase and fetched either manually or when going to the /coaches route.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+During it's development I implemented on my own "script setup" syntax as well as Pinia for state management, given the original course was mainly on "Options API" and Vuex. I also made it on Vite as opposed to Vue-CLI.
